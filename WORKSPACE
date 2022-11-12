@@ -46,53 +46,69 @@ python_register_toolchains(
 )
 
 load("@python//:defs.bzl", "interpreter")
-load("@rules_python//python:pip.bzl", "pip_parse")
+
+http_archive(
+    name = "com_github_ali5h_rules_pip",
+    sha256 = "619f337ff54cdcaf090ea2f849ef631f48ea08369374543d747183cf2c45157c",
+    strip_prefix = "rules_pip-c3ae659ac0d0967b5f4cc4c8272f36fca9c5b620",
+    urls = ["https://github.com/ironpeak/rules_pip/archive/c3ae659ac0d0967b5f4cc4c8272f36fca9c5b620.tar.gz"],
+)
+
+load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
 
 # product
 
-pip_parse(
+pip_import(
     name = "product_container",
-    python_interpreter_target = interpreter,
-    requirements_lock = "//product:requirements_linux_lock.txt",
+    # python_runtime = interpreter,
+    requirements = "//product:requirements_lock.txt",
 )
 
-load("@product_container//:requirements.bzl", product_container_install_deps = "install_deps")
+load("@product_container//:requirements.bzl", product_container_pip_install = "pip_install")
 
-product_container_install_deps()
+product_container_pip_install([
+    "--platform",
+    "manylinux_2_17_x86_64",
+    "--only-binary",
+    ":all",
+])
 
-pip_parse(
+pip_import(
     name = "product_host",
-    python_interpreter_target = interpreter,
-    requirements_darwin = "//product:requirements_linux_lock.txt",
-    requirements_linux = "//product:requirements_darwin_lock.txt",
+    compile = True,
+    # python_runtime = interpreter,
+    requirements = "//product:requirements.in",
 )
 
-load("@product_host//:requirements.bzl", product_host_install_deps = "install_deps")
+load("@product_host//:requirements.bzl", product_host_pip_install = "pip_install")
 
-product_host_install_deps()
+product_host_pip_install([
+    "--only-binary",
+    ":all",
+])
 
 ## hello-world-custom
 
-pip_parse(
-    name = "hello_world_custom_container",
-    python_interpreter_target = interpreter,
-    requirements_lock = "//product/hello-world-custom:requirements_linux_lock.txt",
-)
+# pip_parse(
+#     name = "hello_world_custom_container",
+#     python_interpreter_target = interpreter,
+#     requirements_lock = "//product/hello-world-custom:requirements_linux_lock.txt",
+# )
 
-load("@hello_world_custom_container//:requirements.bzl", hello_world_custom_container_install_deps = "install_deps")
+# load("@hello_world_custom_container//:requirements.bzl", hello_world_custom_container_install_deps = "install_deps")
 
-hello_world_custom_container_install_deps()
+# hello_world_custom_container_install_deps()
 
-pip_parse(
-    name = "hello_world_custom_host",
-    python_interpreter_target = interpreter,
-    requirements_darwin = "//product/hello-world-custom:requirements_linux_lock.txt",
-    requirements_linux = "//product/hello-world-custom:requirements_darwin_lock.txt",
-)
+# pip_parse(
+#     name = "hello_world_custom_host",
+#     python_interpreter_target = interpreter,
+#     requirements_darwin = "//product/hello-world-custom:requirements_linux_lock.txt",
+#     requirements_linux = "//product/hello-world-custom:requirements_darwin_lock.txt",
+# )
 
-load("@hello_world_custom_host//:requirements.bzl", hello_world_custom_host_install_deps = "install_deps")
+# load("@hello_world_custom_host//:requirements.bzl", hello_world_custom_host_install_deps = "install_deps")
 
-hello_world_custom_host_install_deps()
+# hello_world_custom_host_install_deps()
 
 # Docker
 http_archive(
@@ -118,3 +134,16 @@ load(
 )
 
 _py3_image_repos()
+
+load(
+    "@io_bazel_rules_docker//container:pull.bzl",
+    "container_pull",
+)
+
+container_pull(
+    name = "python_image",
+    architecture = "amd64",
+    digest = "sha256:eef39ed128b235c95c723eabe2de05670ba87f3273cc784effe4c3d9d0847c09",
+    registry = "docker.io",
+    repository = "python",
+)

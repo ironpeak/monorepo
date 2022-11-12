@@ -1,12 +1,12 @@
-load("//custom/python:image.bzl", "py_image")
+# load("//custom/python:image.bzl", "py_image")
 
-py_image(
-    name = "hello-world",
-    srcs = ["main.py"],
-    main = "main.py",
-    deps = [
-        "django",
-        "psycopg2-binary",
-        "//product/logger",
-    ],
-)
+# py_image(
+#     name = "hello-world",
+#     srcs = ["main.py"],
+#     main = "main.py",
+#     deps = [
+#         "django",
+#         "psycopg2-binary",
+#         "//product/logger",
+#     ],
+# )

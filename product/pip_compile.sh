@@ -1,7 +1,7 @@
 #!/bin/bash
 
-platform="$1"
+pip install --upgrade pip
 
 pip install pip-tools
 
-pip-compile --build-isolation --generate-hashes --output-file="requirements_${platform}_lock.txt"
+pip-compile --no-build-isolation --generate-hashes --allow-unsafe --output-file="requirements_lock.txt"
