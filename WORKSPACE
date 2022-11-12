@@ -46,28 +46,28 @@ python_register_toolchains(
 )
 
 load("@python//:defs.bzl", "interpreter")
-
 load("@rules_python//python:pip.bzl", "pip_parse")
 
 pip_parse(
-    name = "product_lock",
+    name = "product_container",
     python_interpreter_target = interpreter,
     requirements_lock = "//product:requirements_lock.txt",
 )
 
-load("@product_lock//:requirements.bzl", product_lock_install_deps = "install_deps")
+load("@product_container//:requirements.bzl", product_container_install_deps = "install_deps")
 
-product_lock_install_deps()
+product_container_install_deps()
 
 pip_parse(
-    name = "product",
+    name = "product_host",
     python_interpreter_target = interpreter,
-    requirements = "//product:requirements.in",
+    requirements_darwin = "//product:requirements_lock.txt",
+    requirements_linux = "//product:requirements_lock.txt",
 )
 
-load("@product//:requirements.bzl", product_install_deps = "install_deps")
+load("@product_host//:requirements.bzl", product_host_install_deps = "install_deps")
 
-product_install_deps()
+product_host_install_deps()
 
 # Docker
 http_archive(
@@ -80,6 +80,7 @@ load(
     "@io_bazel_rules_docker//repositories:repositories.bzl",
     container_repositories = "repositories",
 )
+
 container_repositories()
 
 load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")

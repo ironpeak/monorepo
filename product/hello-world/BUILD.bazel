@@ -1,18 +1,11 @@
-load("@io_bazel_rules_docker//python3:image.bzl", "py3_image")
-load("@product//:requirements.bzl", requirement_product = "requirement")
-load("@product_lock//:requirements.bzl", requirement_product_lock = "requirement")
+load("//custom/python:image.bzl", "py_image")
 
-deps = [
-    "django",
-    "psycopg2-binary",
-]
-
-py3_image(
+py_image(
     name = "hello-world",
     srcs = ["main.py"],
-    deps = select({
-        "@platforms//os:linux": [requirement_product_lock(name) for name in deps],
-        "//conditions:default": [requirement_product(name) for name in deps],
-    }),
     main = "main.py",
+    deps = [
+        "django",
+        "psycopg2-binary",
+    ],
 )
