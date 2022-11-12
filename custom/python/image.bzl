@@ -1,4 +1,4 @@
-load("//custom/python:internal.bzl", "map_dependency_container")
+load("//custom/python:internal.bzl", "map_dependency_container", "map_dependency_with_requirements")
 load("//custom/python:binary.bzl", "py_binary")
 load(
     "@io_bazel_rules_docker//lang:image.bzl",
@@ -16,6 +16,19 @@ def py_image(name, deps, **kwargs):
     _py3_image(
         name = name,
         deps = [map_dependency_container(dep) for dep in deps],
+        **kwargs
+    )
+
+def py_image_with_requirements(name, host_deps, container_deps, **kwargs):
+    py_binary(
+        name = name + ".binary",
+        deps = [map_dependency_with_requirements(dep) for dep in host_deps],
+        **kwargs
+    )
+
+    _py3_image(
+        name = name,
+        deps = [map_dependency_with_requirements(dep) for dep in container_deps],
         **kwargs
     )
 

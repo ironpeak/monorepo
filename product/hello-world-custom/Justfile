@@ -1,0 +1,3 @@
+pip-compile:
+    docker run --cpus="4.0" --memory="8g" --rm -it --platform linux/amd64 -v "$(pwd):/monorepo" -w /monorepo python:3.10 /bin/bash -c "./pip_compile.sh linux"
+    ./pip_compile.sh darwin

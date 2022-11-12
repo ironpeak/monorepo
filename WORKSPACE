@@ -48,6 +48,8 @@ python_register_toolchains(
 load("@python//:defs.bzl", "interpreter")
 load("@rules_python//python:pip.bzl", "pip_parse")
 
+# product
+
 pip_parse(
     name = "product_container",
     python_interpreter_target = interpreter,
@@ -68,6 +70,29 @@ pip_parse(
 load("@product_host//:requirements.bzl", product_host_install_deps = "install_deps")
 
 product_host_install_deps()
+
+## hello-world-custom
+
+pip_parse(
+    name = "hello_world_custom_container",
+    python_interpreter_target = interpreter,
+    requirements_lock = "//product/hello-world-custom:requirements_linux_lock.txt",
+)
+
+load("@hello_world_custom_container//:requirements.bzl", hello_world_custom_container_install_deps = "install_deps")
+
+hello_world_custom_container_install_deps()
+
+pip_parse(
+    name = "hello_world_custom_host",
+    python_interpreter_target = interpreter,
+    requirements_darwin = "//product/hello-world-custom:requirements_linux_lock.txt",
+    requirements_linux = "//product/hello-world-custom:requirements_darwin_lock.txt",
+)
+
+load("@hello_world_custom_host//:requirements.bzl", hello_world_custom_host_install_deps = "install_deps")
+
+hello_world_custom_host_install_deps()
 
 # Docker
 http_archive(
