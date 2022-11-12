@@ -7,5 +7,6 @@ py_image(
     deps = [
         "django",
         "psycopg2-binary",
+        "//product/logger",
     ],
 )

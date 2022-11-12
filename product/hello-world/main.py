@@ -1,4 +1,5 @@
 import django
 import psycopg2
+from product.logger import logger
 
-print("Hello World!")
+logger.log("Hello World!")

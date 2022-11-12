@@ -1,0 +1,10 @@
+load("//custom/python:library.bzl", "py_library")
+
+py_library(
+    name = "logger",
+    srcs = ["logger.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "cryptography",
+    ],
+)

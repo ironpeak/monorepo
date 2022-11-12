@@ -51,7 +51,7 @@ load("@rules_python//python:pip.bzl", "pip_parse")
 pip_parse(
     name = "product_container",
     python_interpreter_target = interpreter,
-    requirements_lock = "//product:requirements_lock.txt",
+    requirements_lock = "//product:requirements_linux_lock.txt",
 )
 
 load("@product_container//:requirements.bzl", product_container_install_deps = "install_deps")
@@ -61,8 +61,8 @@ product_container_install_deps()
 pip_parse(
     name = "product_host",
     python_interpreter_target = interpreter,
-    requirements_darwin = "//product:requirements_lock.txt",
-    requirements_linux = "//product:requirements_lock.txt",
+    requirements_darwin = "//product:requirements_linux_lock.txt",
+    requirements_linux = "//product:requirements_darwin_lock.txt",
 )
 
 load("@product_host//:requirements.bzl", product_host_install_deps = "install_deps")
