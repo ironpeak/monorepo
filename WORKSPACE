@@ -60,7 +60,7 @@ load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
 
 pip_import(
     name = "product_container",
-    # python_runtime = interpreter,
+    python_runtime = interpreter,
     requirements = "//product:requirements_lock.txt",
 )
 
@@ -68,7 +68,7 @@ load("@product_container//:requirements.bzl", product_container_pip_install = "p
 
 product_container_pip_install([
     "--platform",
-    "manylinux_2_17_x86_64",
+    "linux_x86_64",
     "--only-binary",
     ":all",
 ])
@@ -76,7 +76,7 @@ product_container_pip_install([
 pip_import(
     name = "product_host",
     compile = True,
-    # python_runtime = interpreter,
+    python_runtime = interpreter,
     requirements = "//product:requirements.in",
 )
 

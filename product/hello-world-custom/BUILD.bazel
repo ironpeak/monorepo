@@ -6,7 +6,7 @@
 #     main = "main.py",
 #     deps = [
 #         "django",
-#         "psycopg2-binary",
+#         "psycopg2",
 #         "//product/logger",
 #     ],
 # )

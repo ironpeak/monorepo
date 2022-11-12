@@ -4,7 +4,9 @@ set -euo pipefail
 
 source pythonpath.sh
 
+set +e
 shift
+set -e
 
 python "{MAIN}" "$@"
 

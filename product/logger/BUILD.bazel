@@ -5,6 +5,6 @@ py_library(
     srcs = ["logger.py"],
     visibility = ["//visibility:public"],
     deps = [
-        "cryptography",
+        # "cryptography",
     ],
 )

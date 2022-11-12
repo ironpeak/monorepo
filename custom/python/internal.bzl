@@ -1,8 +1,11 @@
 load("@product_container//:requirements.bzl", container_requirement = "requirement")
 load("@product_host//:requirements.bzl", host_requirement = "requirement")
+load("//precompiled/python:internal.bzl", "is_precompiled", "map_dependency_precompiled")
 
 def map_dependency_container(dependency):
     if is_3rdparty(dependency):
+        if is_precompiled(dependency):
+            return map_dependency_precompiled(dependency)
         return container_requirement(dependency)
     return _fullname(dependency) + ".container"
 

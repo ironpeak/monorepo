@@ -1,7 +1,6 @@
 load("//custom/python:internal.bzl", "map_dependency_container", "map_dependency_with_requirements")
 load("//custom/python:binary.bzl", "py_binary")
 load("//custom/python:build.bzl", "py_build")
-load("@rules_python//python:defs.bzl", rules_python_py_binary = "py_binary")
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 
 def py_image(name, deps, **kwargs):
@@ -33,14 +32,6 @@ def py_image_with_requirements(name, host_deps, container_deps, **kwargs):
     )
 
 def _py3_image(name, base = None, deps = [], srcs = [], main = "main.py", **kwargs):
-    """Constructs a container image wrapping a py_binary target.
-
-  Args:
-    name: Name of the py3_image rule target.
-    base: Base image to use for the py3_image.
-    deps: Dependencies of the py3_image.
-    **kwargs: See py_binary.
-  """
     binary_name = name + ".binary.tar"
 
     py_build(
@@ -48,7 +39,7 @@ def _py3_image(name, base = None, deps = [], srcs = [], main = "main.py", **kwar
         deps = deps,
         srcs = srcs,
         main = main,
-        imports = [],
+        imports = ["product"],
         output = "app",
     )
 
@@ -61,4 +52,5 @@ def _py3_image(name, base = None, deps = [], srcs = [], main = "main.py", **kwar
         ],
         visibility = ["//visibility:public"],
         workdir = "/app",
+        entrypoint = "/app/main.sh",
     )

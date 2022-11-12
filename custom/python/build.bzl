@@ -4,7 +4,7 @@ set -euo pipefail
 
 ls \
     | grep -v bazel-out \
-    | xargs -L 1 -I @ cp -rL @ {OUTPUT}
+    | xargs -I @ cp -rL @ {OUTPUT}
 
 pythonpath="$(find bazel-out | grep '/pythonpath.sh')"
 cp -L ${{pythonpath}} {OUTPUT}/pythonpath.sh
@@ -36,7 +36,7 @@ def _impl(ctx):
         template = ctx.attr._pythonpath.files.to_list()[0],
         output = pythonpath_file,
         substitutions = {
-            "{IMPORTS}": ":".join(ctx.attr.imports),
+            "{IMPORTS}": "\n".join(ctx.attr.imports),
         },
     )
     inputs.append(pythonpath_file)

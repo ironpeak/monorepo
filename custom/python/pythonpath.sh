@@ -1,7 +1,5 @@
-#!/bin/bash
+imports="{IMPORTS}"
 
-set -euo pipefail
+packages=$(ls external | xargs -I {} echo "$(pwd)/external/{}")
 
-IMPORTS="{IMPORTS}"
-
-exit 0
+export PYTHONPATH=$(printf "${packages}\n${imports}" | tr '\n' ':')

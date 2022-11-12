@@ -1,0 +1,14 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
+py_library(
+    name = "psycopg2-binary",
+    srcs = glob(
+        include = [
+            "*.py",
+        ],
+    ),
+    data = [
+        "_psycopg.cpython-310-x86_64-linux-gnu.so",
+    ],
+    visibility = ["//visibility:public"],
+)
