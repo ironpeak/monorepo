@@ -1,0 +1,4 @@
+exports_files([
+    "main.sh",
+    "pythonpath.sh",
+])

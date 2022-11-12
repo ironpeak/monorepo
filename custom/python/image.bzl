@@ -47,12 +47,15 @@ def _py3_image(name, base = None, deps = [], srcs = [], main = "main.py", **kwar
         name = binary_name,
         deps = deps,
         srcs = srcs,
+        main = main,
+        imports = [],
+        output = "app",
     )
 
     container_image(
         name = name,
         base = base,
-        directory = "/app",
+        directory = "/",
         files = [
             ":" + binary_name,
         ],
