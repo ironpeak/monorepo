@@ -1,5 +1,5 @@
 load("@rules_python//python:defs.bzl", rules_python_py_library = "py_library")
-load("//custom/python:internal.bzl", "is_3rdparty", "map_dependency_container", "map_dependency_host")
+load("//custom/python:internal.bzl", "get_srcs", "is_3rdparty", "map_dependency_container", "map_dependency_host")
 
 def py_library(name, srcs, deps, **kwargs):
     rules_python_py_library(
@@ -14,7 +14,7 @@ def py_library(name, srcs, deps, **kwargs):
     rules_python_py_library(
         name = "_" + name + ".srcs",
         srcs = srcs,
-        deps = [dep + ".srcs" for dep in deps if not is_3rdparty(dep)],
+        deps = [get_srcs(dep) for dep in deps if not is_3rdparty(dep)],
         tags = ["manual"],
         **kwargs
     )

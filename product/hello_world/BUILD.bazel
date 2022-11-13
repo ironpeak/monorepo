@@ -1,12 +1,41 @@
 load("//custom/python:image.bzl", "py_image")
+load("//custom/python:test.bzl", "py_test")
+load("//custom/python:library.bzl", "py_library")
 
 py_image(
     name = "hello_world",
     srcs = ["main.py"],
+    imports = [
+        "..",
+    ],
     main = "main.py",
+    deps = [
+        ":lib",
+    ],
+)
+
+py_library(
+    name = "lib",
+    srcs = ["lib.py"],
+    imports = [
+        "..",
+    ],
     deps = [
         "django",
         "psycopg2-binary",
         "//product/logger",
+    ],
+)
+
+py_test(
+    name = "test",
+    srcs = ["test.py"],
+    imports = [
+        "..",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "pytest",
+        ":lib",
     ],
 )

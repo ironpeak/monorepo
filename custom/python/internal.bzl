@@ -17,15 +17,18 @@ def map_dependency_with_requirements_container(pip_import, dependency):
         if is_precompiled(dependency):
             return map_dependency_precompiled(dependency)
         return "@{}_container//:{}".format(pip_import, dependency)
-    return _fullname(dependency).replace(":", ":_") + ".srcs"
+    return get_srcs(dependency)
 
 def map_dependency_with_requirements_host(pip_import, dependency):
     if is_3rdparty(dependency):
         return "@{}_host//:{}".format(pip_import, dependency)
+    return get_srcs(dependency)
+
+def get_srcs(dependency):
     return _fullname(dependency).replace(":", ":_") + ".srcs"
 
 def is_3rdparty(dependency):
-    return "//" not in dependency
+    return dependency[0] not in [":", "/"]
 
 def _fullname(dependency):
     if ":" in dependency:

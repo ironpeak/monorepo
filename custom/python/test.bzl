@@ -8,9 +8,12 @@ def py_test(name, deps, **kwargs):
         **kwargs
     )
 
-def py_test_with_requirements(name, deps, **kwargs):
+def py_test_with_requirements(name, deps, pip_import = None, **kwargs):
+    if pip_import == None:
+        pip_import = name
+
     rules_python_py_test(
         name = name,
-        deps = [map_dependency_with_requirements_host(dep) for dep in deps],
+        deps = [map_dependency_with_requirements_host(pip_import, dep) for dep in deps],
         **kwargs
     )

@@ -1,5 +1,5 @@
 import django
 from psycopg2.errors import DuplicateObject
-from product.logger import logger
+import lib
 
-logger.log("Hello World!")
+lib.greet_world()
