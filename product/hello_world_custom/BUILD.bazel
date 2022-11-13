@@ -11,7 +11,9 @@ py_image_with_requirements(
     main = "main.py",
     deps = [
         "django",
+        "grpcio",
         "psycopg2-binary",
+        "xxhash",
         ":lib",
     ],
 )
