@@ -1,12 +1,17 @@
-# load("//custom/python:image.bzl", "py_image")
+load("//custom/python:image.bzl", "py_image_with_requirements")
+load("@product_container//:requirements.bzl", container_requirement = "requirement")
+load("@product_host//:requirements.bzl", host_requirement = "requirement")
 
-# py_image(
-#     name = "hello-world",
-#     srcs = ["main.py"],
-#     main = "main.py",
-#     deps = [
-#         "django",
-#         "psycopg2",
-#         "//product/logger",
-#     ],
-# )
+py_image_with_requirements(
+    name = "hello-world-custom",
+    srcs = ["main.py"],
+    container_requirement = container_requirement,
+    host_requirement = host_requirement,
+    main = "main.py",
+    deps = [
+        "cryptography",
+        "django",
+        "psycopg2-binary",
+        "//product/logger",
+    ],
+)

@@ -61,6 +61,7 @@ load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
 pip_import(
     name = "product_container",
     python_runtime = interpreter,
+    repo_prefix = "product_container",
     requirements = "//product:requirements_lock.txt",
 )
 
@@ -77,6 +78,7 @@ pip_import(
     name = "product_host",
     compile = True,
     python_runtime = interpreter,
+    repo_prefix = "product_host",
     requirements = "//product:requirements.in",
 )
 
@@ -92,6 +94,7 @@ product_host_pip_install([
 pip_import(
     name = "hello_world_custom_container",
     python_runtime = interpreter,
+    repo_prefix = "hello_world_custom_container",
     requirements = "//product/hello-world-custom:requirements_lock.txt",
 )
 
@@ -102,6 +105,7 @@ hello_world_custom_container_pip_install()
 pip_import(
     name = "hello_world_custom_host",
     python_runtime = interpreter,
+    repo_prefix = "hello_world_custom_host",
     requirements = "//product/hello-world-custom:requirements.in",
 )
 

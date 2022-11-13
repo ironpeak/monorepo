@@ -20,21 +20,21 @@ def py_image(name, deps, **kwargs):
         **kwargs
     )
 
-def py_image_with_requirements(name, host_deps, container_deps, **kwargs):
+def py_image_with_requirements(name, deps, container_requirement, host_requirement, **kwargs):
     py_binary(
         name = name + ".binary",
-        deps = [map_dependency_with_requirements(dep) for dep in host_deps],
+        deps = [map_dependency_with_requirements(dep, host_requirement) for dep in deps],
         **kwargs
     )
 
     _py3_image(
         name = name,
-        deps = [map_dependency_with_requirements(dep) for dep in container_deps],
+        deps = [map_dependency_with_requirements(dep, container_requirement) for dep in deps],
         base = "//:python",
         **kwargs
     )
 
-def _py3_image(name, base = None, deps = [], layers = [], env = {}, **kwargs):
+def _py3_image(name, base = None, deps = [], layers = [], env = {}, data = [], **kwargs):
     """Constructs a container image wrapping a py_binary target.
 
   Args:
@@ -58,8 +58,12 @@ def _py3_image(name, base = None, deps = [], layers = [], env = {}, **kwargs):
         name = binary_name,
         python_version = "PY3",
         deps = deps + layers,
+        data = data + [
+            "//custom/python:main.sh",
+        ],
         exec_compatible_with = ["@io_bazel_rules_docker//platforms:run_in_container"],
         tags = ["manual"],
+        visibility = ["//visibility:private"],
         **kwargs
     )
 
@@ -76,18 +80,16 @@ def _py3_image(name, base = None, deps = [], layers = [], env = {}, **kwargs):
         base = app_layer(name = "%s.%d" % (name, index), base = base, dep = dep, tags = tags)
         base = app_layer(name = "%s.%d-symlinks" % (name, index), base = base, dep = dep, binary = binary_name, tags = tags)
 
-    visibility = kwargs.get("visibility", None)
     app_layer(
         name = name,
         base = base,
-        entrypoint = ["/usr/bin/python"],
+        entrypoint = ["./custom/python/main.sh"],
         env = env,
         binary = binary_name,
-        visibility = visibility,
         tags = tags,
         args = kwargs.get("args"),
-        data = kwargs.get("data"),
         testonly = kwargs.get("testonly"),
+        visibility = ["//visibility:private"],
         # The targets of the symlinks in the symlink layers are relative to the
         # workspace directory under the app directory. Thus, create an empty
         # workspace directory to ensure the symlinks are valid. See
