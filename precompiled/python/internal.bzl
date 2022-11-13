@@ -1,5 +1,5 @@
 precompiled = {
-    "psycopg2-binary": "//precompiled/python/psycopg2-binary/psycopg2:psycopg2-binary",
+    "psycopg2-binary": "//precompiled/python/psycopg2_binary",
 }
 
 def is_precompiled(dependency):

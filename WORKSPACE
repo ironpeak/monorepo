@@ -68,7 +68,7 @@ load("@product_container//:requirements.bzl", product_container_pip_install = "p
 
 product_container_pip_install([
     "--platform",
-    "linux_x86_64",
+    "manylinux_2_17_x86_64",
     "--only-binary",
     ":all",
 ])
@@ -87,28 +87,27 @@ product_host_pip_install([
     ":all",
 ])
 
-## hello-world-custom
+# hello-world-custom
 
-# pip_parse(
-#     name = "hello_world_custom_container",
-#     python_interpreter_target = interpreter,
-#     requirements_lock = "//product/hello-world-custom:requirements_linux_lock.txt",
-# )
+pip_import(
+    name = "hello_world_custom_container",
+    python_runtime = interpreter,
+    requirements = "//product/hello-world-custom:requirements_lock.txt",
+)
 
-# load("@hello_world_custom_container//:requirements.bzl", hello_world_custom_container_install_deps = "install_deps")
+load("@hello_world_custom_container//:requirements.bzl", hello_world_custom_container_pip_install = "pip_install")
 
-# hello_world_custom_container_install_deps()
+hello_world_custom_container_pip_install()
 
-# pip_parse(
-#     name = "hello_world_custom_host",
-#     python_interpreter_target = interpreter,
-#     requirements_darwin = "//product/hello-world-custom:requirements_linux_lock.txt",
-#     requirements_linux = "//product/hello-world-custom:requirements_darwin_lock.txt",
-# )
+pip_import(
+    name = "hello_world_custom_host",
+    python_runtime = interpreter,
+    requirements = "//product/hello-world-custom:requirements.in",
+)
 
-# load("@hello_world_custom_host//:requirements.bzl", hello_world_custom_host_install_deps = "install_deps")
+load("@hello_world_custom_host//:requirements.bzl", hello_world_custom_host_pip_install = "pip_install")
 
-# hello_world_custom_host_install_deps()
+hello_world_custom_host_pip_install()
 
 # Docker
 http_archive(

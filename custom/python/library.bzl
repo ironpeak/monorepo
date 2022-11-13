@@ -3,17 +3,19 @@ load("//custom/python:internal.bzl", "is_3rdparty", "map_dependency_container", 
 
 def py_library(name, srcs, deps, **kwargs):
     rules_python_py_library(
-        name = name + ".container",
+        name = "_" + name + ".container",
         srcs = srcs,
         deps = [map_dependency_container(dep) for dep in deps],
         exec_compatible_with = ["@io_bazel_rules_docker//platforms:run_in_container"],
+        tags = ["manual"],
         **kwargs
     )
 
     rules_python_py_library(
-        name = name + ".srcs",
+        name = "_" + name + ".srcs",
         srcs = srcs,
         deps = [dep + ".srcs" for dep in deps if not is_3rdparty(dep)],
+        tags = ["manual"],
         **kwargs
     )
 

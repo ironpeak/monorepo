@@ -7,7 +7,7 @@ def map_dependency_container(dependency):
         if is_precompiled(dependency):
             return map_dependency_precompiled(dependency)
         return container_requirement(dependency)
-    return _fullname(dependency) + ".container"
+    return _fullname(dependency).replace(":", ":_") + ".container"
 
 def map_dependency_host(dependency):
     if is_3rdparty(dependency):
