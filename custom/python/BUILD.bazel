@@ -1,1 +1,1 @@
-exports_files(["main.sh"])
+exports_files(["entrypoint.sh"])

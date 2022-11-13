@@ -63,7 +63,7 @@ def _py3_image(name, base = None, deps = [], layers = [], env = {}, data = [], *
         python_version = "PY3",
         deps = deps + layers,
         data = data + [
-            "//custom/python:main.sh",
+            "//custom/python:entrypoint.sh",
         ],
         exec_compatible_with = ["@io_bazel_rules_docker//platforms:run_in_container"],
         tags = ["manual"],
@@ -87,7 +87,7 @@ def _py3_image(name, base = None, deps = [], layers = [], env = {}, data = [], *
     app_layer(
         name = name,
         base = base,
-        entrypoint = ["./custom/python/main.sh"],
+        entrypoint = ["./custom/python/entrypoint.sh"],
         env = env,
         binary = binary_name,
         tags = tags,
