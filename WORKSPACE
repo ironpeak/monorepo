@@ -95,23 +95,32 @@ pip_import(
     name = "hello_world_custom_container",
     python_runtime = interpreter,
     repo_prefix = "hello_world_custom_container",
-    requirements = "//product/hello-world-custom:requirements_lock.txt",
+    requirements = "//product/hello_world_custom:requirements_lock.txt",
 )
 
 load("@hello_world_custom_container//:requirements.bzl", hello_world_custom_container_pip_install = "pip_install")
 
-hello_world_custom_container_pip_install()
+hello_world_custom_container_pip_install([
+    "--platform",
+    "manylinux_2_17_x86_64",
+    "--only-binary",
+    ":all",
+])
 
 pip_import(
     name = "hello_world_custom_host",
+    compile = True,
     python_runtime = interpreter,
     repo_prefix = "hello_world_custom_host",
-    requirements = "//product/hello-world-custom:requirements.in",
+    requirements = "//product/hello_world_custom:requirements.in",
 )
 
 load("@hello_world_custom_host//:requirements.bzl", hello_world_custom_host_pip_install = "pip_install")
 
-hello_world_custom_host_pip_install()
+hello_world_custom_host_pip_install([
+    "--only-binary",
+    ":all",
+])
 
 # Docker
 http_archive(

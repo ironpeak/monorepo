@@ -12,11 +12,16 @@ def map_dependency_host(dependency):
         return "@product_host//:" + dependency
     return dependency
 
-def map_dependency_with_requirements(dependency, requirement):
+def map_dependency_with_requirements_container(pip_import, dependency):
     if is_3rdparty(dependency):
         if is_precompiled(dependency):
             return map_dependency_precompiled(dependency)
-        return requirement(dependency)
+        return "@{}_container//:{}".format(pip_import, dependency)
+    return _fullname(dependency).replace(":", ":_") + ".srcs"
+
+def map_dependency_with_requirements_host(pip_import, dependency):
+    if is_3rdparty(dependency):
+        return "@{}_host//:{}".format(pip_import, dependency)
     return _fullname(dependency).replace(":", ":_") + ".srcs"
 
 def is_3rdparty(dependency):
