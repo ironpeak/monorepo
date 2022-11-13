@@ -38,15 +38,6 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.13.0.tar.gz",
 )
 
-load("@rules_python//python:repositories.bzl", "python_register_toolchains")
-
-python_register_toolchains(
-    name = "python",
-    python_version = "3.10",
-)
-
-load("@python//:defs.bzl", "interpreter")
-
 http_archive(
     name = "com_github_ali5h_rules_pip",
     sha256 = "619f337ff54cdcaf090ea2f849ef631f48ea08369374543d747183cf2c45157c",
@@ -60,7 +51,6 @@ load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
 
 pip_import(
     name = "product_container",
-    python_runtime = interpreter,
     repo_prefix = "product_container",
     requirements = "//product:requirements_lock.txt",
 )
@@ -69,7 +59,7 @@ load("@product_container//:requirements.bzl", product_container_pip_install = "p
 
 product_container_pip_install([
     "--platform",
-    "manylinux_2_17_x86_64",
+    "linux_x86_64",
     "--only-binary",
     ":all",
 ])
@@ -77,7 +67,6 @@ product_container_pip_install([
 pip_import(
     name = "product_host",
     compile = True,
-    python_runtime = interpreter,
     repo_prefix = "product_host",
     requirements = "//product:requirements.in",
 )
@@ -93,7 +82,6 @@ product_host_pip_install([
 
 pip_import(
     name = "hello_world_custom_container",
-    python_runtime = interpreter,
     repo_prefix = "hello_world_custom_container",
     requirements = "//product/hello_world_custom:requirements_lock.txt",
 )
@@ -102,7 +90,7 @@ load("@hello_world_custom_container//:requirements.bzl", hello_world_custom_cont
 
 hello_world_custom_container_pip_install([
     "--platform",
-    "manylinux_2_17_x86_64",
+    "linux_x86_64",
     "--only-binary",
     ":all",
 ])
@@ -110,7 +98,6 @@ hello_world_custom_container_pip_install([
 pip_import(
     name = "hello_world_custom_host",
     compile = True,
-    python_runtime = interpreter,
     repo_prefix = "hello_world_custom_host",
     requirements = "//product/hello_world_custom:requirements.in",
 )

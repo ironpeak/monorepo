@@ -1,0 +1,18 @@
+load("@rules_python//python:defs.bzl", "py_library")
+
+py_library(
+    name = "xxhash",
+    srcs = glob(
+        include = [
+            "**/*.py",
+        ],
+    ),
+    data = glob(
+        include = [
+            "**/*.so",
+            "**/*.so.*",
+        ],
+    ),
+    imports = ["."],
+    visibility = ["//visibility:public"],
+)

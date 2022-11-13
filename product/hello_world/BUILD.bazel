@@ -22,7 +22,9 @@ py_library(
     ],
     deps = [
         "django",
+        "grpcio",
         "psycopg2-binary",
+        "xxhash",
         "//product/logger",
     ],
 )
