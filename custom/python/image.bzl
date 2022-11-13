@@ -41,15 +41,16 @@ def py_image_with_requirements(name, deps, pip_import = None, **kwargs):
 def _py3_image(name, base = None, deps = [], layers = [], env = {}, data = [], **kwargs):
     """Constructs a container image wrapping a py_binary target.
 
-  Args:
-    name: Name of the py3_image rule target.
-    base: Base image to use for the py3_image.
-    deps: Dependencies of the py3_image.
-    layers: Augments "deps" with dependencies that should be put into
-           their own layers.
-    env: Environment variables for the py_image.
-    **kwargs: See py_binary.
-  """
+    Args:
+        name: Name of the py3_image rule target.
+        base: Base image to use for the py3_image.
+        deps: Dependencies of the py3_image.
+        layers: Augments "deps" with dependencies that should be put into
+            their own layers.
+        env: Environment variables for the py_image.
+        data: Data for the py_image.
+        **kwargs: See py_binary.
+    """
     binary_name = "_" + name + ".container.binary"
 
     if "main" not in kwargs:
